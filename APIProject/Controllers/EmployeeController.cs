@@ -38,8 +38,8 @@ namespace APIProject.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> AddEmployee(Employee employee)
         {
-            employee.CreatedDate = DateTime.Now;
-            employee.ModifiedDate = DateTime.Now;
+            employee.CreatedDate = DateTime.UtcNow;
+            employee.ModifiedDate = DateTime.UtcNow;
             _dataContext.employees.Add(employee);
             await _dataContext.SaveChangesAsync();
             return Ok(await _dataContext.employees.ToListAsync());
@@ -54,7 +54,7 @@ namespace APIProject.Controllers
                 return NotFound("Employee not found.");
 
             dbEmployee.Name = employee.Name;
-            dbEmployee.ModifiedDate = DateTime.Now;
+            dbEmployee.ModifiedDate = DateTime.UtcNow;
           
             await _dataContext.SaveChangesAsync();
             return Ok(await _dataContext.employees.ToListAsync());

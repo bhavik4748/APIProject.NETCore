@@ -10,5 +10,10 @@ namespace APIProject.Data
         }
 
         public DbSet<Employee> employees { get; set; }
+
+        public DbSet<State> states { get; set; }
+
+        public DbSet<WorkFlow> workflows { get; set; }
+
     }
 }
