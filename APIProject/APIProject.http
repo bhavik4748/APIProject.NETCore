@@ -1,0 +1,10 @@
+@APIProject_HostAddress = https://localhost:7110
+
+GET {{APIProject_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{APIProject_HostAddress}}/weatherforecast
+
+###
