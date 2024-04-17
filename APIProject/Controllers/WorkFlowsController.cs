@@ -61,6 +61,10 @@ namespace APIProject.Controllers
                 return BadRequest();
             }
 
+            if (workFlow.StateId == 2)
+            {
+                workFlow.EndDate = DateTime.UtcNow;
+            }
             _context.Entry(workFlow).State = EntityState.Modified;
 
             try
@@ -100,6 +104,11 @@ namespace APIProject.Controllers
 
             workFlow.Employee = null;
             workFlow.State = null;
+            if (workFlow.StateId == 1)
+            {
+                workFlow.EndDate = null;
+            }
+
 
             _context.workflows.Add(workFlow);
             await _context.SaveChangesAsync();
