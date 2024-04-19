@@ -49,7 +49,7 @@ namespace APIProject.Controllers
         [HttpPut]
         public async Task<ActionResult<Employee>> UpdateEmployee(Employee employee)
         {
-            var dbEmployee = await _dataContext.employees.FindAsync(employee.Id);
+            var dbEmployee = await _dataContext.employees.FindAsync(employee.EmployeeId);
             if (dbEmployee is null)
                 return NotFound("Employee not found.");
 
@@ -63,7 +63,7 @@ namespace APIProject.Controllers
         [HttpDelete]
         public async Task<ActionResult<Employee>> DeleteEmployee(Employee employee)
         {
-            var dbEmployee = await _dataContext.employees.FindAsync(employee.Id);
+            var dbEmployee = await _dataContext.employees.FindAsync(employee.EmployeeId);
             if (dbEmployee is null)
                 return NotFound("Employee not found.");
 

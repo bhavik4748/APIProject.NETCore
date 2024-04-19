@@ -56,12 +56,12 @@ namespace APIProject.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutWorkFlow(int id, WorkFlow workFlow)
         {
-            if (id != workFlow.Id)
+            if (id != workFlow.WorkFlowId)
             {
                 return BadRequest();
             }
 
-            if (workFlow.StateId == 2)
+            if (workFlow.StateId == 1)
             {
                 workFlow.EndDate = DateTime.UtcNow;
             }
@@ -104,7 +104,7 @@ namespace APIProject.Controllers
 
             workFlow.Employee = null;
             workFlow.State = null;
-            if (workFlow.StateId == 1)
+            if (workFlow.StateId == 2)
             {
                 workFlow.EndDate = null;
             }
@@ -134,7 +134,7 @@ namespace APIProject.Controllers
 
         private bool WorkFlowExists(int id)
         {
-            return _context.workflows.Any(e => e.Id == id);
+            return _context.workflows.Any(e => e.WorkFlowId == id);
         }
     }
 }

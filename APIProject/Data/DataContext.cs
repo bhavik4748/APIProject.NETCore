@@ -15,20 +15,5 @@ namespace APIProject.Data
 
         public DbSet<WorkFlow> workflows { get; set; }
 
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // Configure foreign key relationships
-            modelBuilder.Entity<WorkFlow>()
-                .HasOne(w => w.Employee)
-                .WithMany() // No navigation property on Employee side
-                .HasForeignKey(w => w.EmployeeId);
-
-            modelBuilder.Entity<WorkFlow>()
-                .HasOne(w => w.State)
-                .WithMany() // No navigation property on State side
-                .HasForeignKey(w => w.StateId);
-        }
-
     }
 }

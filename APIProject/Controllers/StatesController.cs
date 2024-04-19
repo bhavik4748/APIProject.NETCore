@@ -47,7 +47,7 @@ namespace APIProject.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutState(int id, State state)
         {
-            if (id != state.Id)
+            if (id != state.StateId)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace APIProject.Controllers
             _context.states.Add(state);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetState", new { id = state.Id }, state);
+            return CreatedAtAction("GetState", new { id = state.StateId }, state);
         }
 
         // DELETE: api/States/5
@@ -102,7 +102,7 @@ namespace APIProject.Controllers
 
         private bool StateExists(int id)
         {
-            return _context.states.Any(e => e.Id == id);
+            return _context.states.Any(e => e.StateId == id);
         }
     }
 }

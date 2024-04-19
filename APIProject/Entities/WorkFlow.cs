@@ -2,7 +2,7 @@
 {
     public class WorkFlow
     {
-        public int Id { get; set; }   
+        public int WorkFlowId { get; set; }   
         public DateTime StartDate { get; set; } = DateTime.UtcNow;
         public DateTime? EndDate { get; set; }
 
@@ -11,7 +11,7 @@
         public int StateId { get; set; }
 
         // Navigation properties (optional)
-        public Employee Employee { get; set; }
-        public State State { get; set; }
+        public virtual Employee Employee { get; set; }
+        public virtual State State { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APIProject.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class test : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace APIProject.Migrations
                 name: "employees",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    EmployeeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -23,14 +23,14 @@ namespace APIProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_employees", x => x.Id);
+                    table.PrimaryKey("PK_employees", x => x.EmployeeId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "states",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    StateId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StateName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StateDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -38,14 +38,14 @@ namespace APIProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_states", x => x.Id);
+                    table.PrimaryKey("PK_states", x => x.StateId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "workflows",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    WorkFlowId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -54,18 +54,18 @@ namespace APIProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_workflows", x => x.Id);
+                    table.PrimaryKey("PK_workflows", x => x.WorkFlowId);
                     table.ForeignKey(
                         name: "FK_workflows_employees_EmployeeId",
                         column: x => x.EmployeeId,
                         principalTable: "employees",
-                        principalColumn: "Id",
+                        principalColumn: "EmployeeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_workflows_states_StateId",
                         column: x => x.StateId,
                         principalTable: "states",
-                        principalColumn: "Id",
+                        principalColumn: "StateId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
