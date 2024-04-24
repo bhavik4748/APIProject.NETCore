@@ -113,7 +113,12 @@ namespace APIProject.Controllers
             _context.workflows.Add(workFlow);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.workflows.ToListAsync()); ;
+            var result = await _context.workflows
+                .Include(w => w.Employee)
+                .Include(w => w.State)
+                .ToListAsync();
+
+            return Ok(result);
         }
 
         // DELETE: api/WorkFlows/5
