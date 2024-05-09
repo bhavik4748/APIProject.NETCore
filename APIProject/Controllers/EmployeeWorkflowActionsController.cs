@@ -118,6 +118,28 @@ namespace APIProject.Controllers
             _context.EmployeeWorkflowActions.Add(employeeWorkflowAction);
             await _context.SaveChangesAsync();
 
+
+            var auditRow = await _context.Audits
+               .Where(a => a.DataTableId.Equals(employeeId))
+               .Where(a => a.EndDate.Equals(null))
+               .FirstOrDefaultAsync();
+
+            auditRow.EndDate = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            var addNewRowAudit = new Audit
+            {
+                DataTableName = "Employee",
+                DataTableId = employeeId,
+                WorkFlowId = 1,
+                StateId = dbWorkflowAction.StateToWorkflowStateId,
+                StartDate = DateTime.UtcNow,
+                EndDate = null,
+            };
+            _context.Audits.Add(addNewRowAudit);
+            await _context.SaveChangesAsync();
+
+
             var result = await _context.EmployeeWorkflowActions
              .Include(w => w.Employee)
              .Include(w => w.WorkflowAction)

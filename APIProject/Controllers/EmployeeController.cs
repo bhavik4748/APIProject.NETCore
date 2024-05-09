@@ -22,7 +22,8 @@ namespace APIProject.Controllers
         [HttpGet]
         public async Task<ActionResult<Employee>> GetAllEmployees()
         {
-            var employees = await _dataContext.Employees.ToListAsync();
+            var employees = await _dataContext.Employees                
+                .ToListAsync();
             return Ok(employees);
         }
 
@@ -54,7 +55,23 @@ namespace APIProject.Controllers
                 Updated = DateTime.UtcNow
             };
             _dataContext.EmployeeWorkflowStates.Add(employeeWorkflowDefaultState);
+
             await _dataContext.SaveChangesAsync();
+            await _dataContext.Entry(employeeNew).GetDatabaseValuesAsync();
+
+            var auditRow = new Audit
+            {
+                DataTableName = "Employee",
+                DataTableId = employeeNew.EmployeeId,
+                WorkFlowId = 1,
+                StateId = initialStateId,
+                StartDate = DateTime.UtcNow,
+                EndDate = null,
+            };
+
+            _dataContext.Audits.Add(auditRow);
+            await _dataContext.SaveChangesAsync();
+
 
             //    _dataContext.Employees.Add(employeeNew);
 
