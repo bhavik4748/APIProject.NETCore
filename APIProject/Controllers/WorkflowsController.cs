@@ -12,47 +12,47 @@ namespace APIProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatesController : ControllerBase
+    public class WorkflowsController : ControllerBase
     {
         private readonly DataContext _context;
 
-        public StatesController(DataContext context)
+        public WorkflowsController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: api/States
+        // GET: api/Workflows
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<State>>> Getstates()
+        public async Task<ActionResult<IEnumerable<Workflow>>> GetWorkflows()
         {
-            return await _context.states.ToListAsync();
+            return await _context.Workflows.ToListAsync();
         }
 
-        // GET: api/States/5
+        // GET: api/Workflows/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<State>> GetState(int id)
+        public async Task<ActionResult<Workflow>> GetWorkflow(int id)
         {
-            var state = await _context.states.FindAsync(id);
+            var workflow = await _context.Workflows.FindAsync(id);
 
-            if (state == null)
+            if (workflow == null)
             {
                 return NotFound();
             }
 
-            return state;
+            return workflow;
         }
 
-        // PUT: api/States/5
+        // PUT: api/Workflows/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutState(int id, State state)
+        public async Task<IActionResult> PutWorkflow(int id, Workflow workflow)
         {
-            if (id != state.StateId)
+            if (id != workflow.WorkflowId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(state).State = EntityState.Modified;
+            _context.Entry(workflow).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace APIProject.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StateExists(id))
+                if (!WorkflowExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace APIProject.Controllers
             return NoContent();
         }
 
-        // POST: api/States
+        // POST: api/Workflows
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<State>> PostState(State state)
+        public async Task<ActionResult<Workflow>> PostWorkflow(Workflow workflow)
         {
-            _context.states.Add(state);
+            _context.Workflows.Add(workflow);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetState", new { id = state.StateId }, state);
+            return CreatedAtAction("GetWorkflow", new { id = workflow.WorkflowId }, workflow);
         }
 
-        // DELETE: api/States/5
+        // DELETE: api/Workflows/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteState(int id)
+        public async Task<IActionResult> DeleteWorkflow(int id)
         {
-            var state = await _context.states.FindAsync(id);
-            if (state == null)
+            var workflow = await _context.Workflows.FindAsync(id);
+            if (workflow == null)
             {
                 return NotFound();
             }
 
-            _context.states.Remove(state);
+            _context.Workflows.Remove(workflow);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool StateExists(int id)
+        private bool WorkflowExists(int id)
         {
-            return _context.states.Any(e => e.StateId == id);
+            return _context.Workflows.Any(e => e.WorkflowId == id);
         }
     }
 }

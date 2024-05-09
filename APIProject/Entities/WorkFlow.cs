@@ -1,17 +1,14 @@
 ﻿namespace APIProject.Entities
 {
-    public class WorkFlow
+    public class Workflow
     {
-        public int WorkFlowId { get; set; }   
-        public DateTime StartDate { get; set; } = DateTime.UtcNow;
-        public DateTime? EndDate { get; set; }
+        public int WorkflowId { get; set; }
 
-        // Foreign key properties
-        public int EmployeeId { get; set; }
-        public int StateId { get; set; }
 
-        // Navigation properties (optional)
-        public virtual Employee Employee { get; set; }
-        public virtual State State { get; set; }
+        public  string? WorkflowName { get; set; }
+        public string WorkflowDescription { get; set; } = string.Empty;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
+
     }
 }

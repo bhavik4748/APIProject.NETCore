@@ -21,7 +21,7 @@ namespace APIProject.Controllers
         [HttpGet]
         public async Task<ActionResult<Employee>> GetAllEmployees()
         {
-            var employees = await _dataContext.employees.ToListAsync();
+            var employees = await _dataContext.Employees.ToListAsync();
             return Ok(employees);
         }
 
@@ -29,7 +29,7 @@ namespace APIProject.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var employee = await _dataContext.employees.FindAsync(id);
+            var employee = await _dataContext.Employees.FindAsync(id);
             if (employee is null)
                 return NotFound("Employee not found.");
             return Ok(employee);
@@ -40,16 +40,16 @@ namespace APIProject.Controllers
         {
             employee.CreatedDate = DateTime.UtcNow;
             employee.ModifiedDate = DateTime.UtcNow;
-            _dataContext.employees.Add(employee);
+            _dataContext.Employees.Add(employee);
             await _dataContext.SaveChangesAsync();
-            return Ok(await _dataContext.employees.ToListAsync());
+            return Ok(await _dataContext.Employees.ToListAsync());
         }
 
 
         [HttpPut]
         public async Task<ActionResult<Employee>> UpdateEmployee(Employee employee)
         {
-            var dbEmployee = await _dataContext.employees.FindAsync(employee.EmployeeId);
+            var dbEmployee = await _dataContext.Employees.FindAsync(employee.EmployeeId);
             if (dbEmployee is null)
                 return NotFound("Employee not found.");
 
@@ -57,19 +57,19 @@ namespace APIProject.Controllers
             dbEmployee.ModifiedDate = DateTime.UtcNow;
           
             await _dataContext.SaveChangesAsync();
-            return Ok(await _dataContext.employees.ToListAsync());
+            return Ok(await _dataContext.Employees.ToListAsync());
         }
 
         [HttpDelete]
         public async Task<ActionResult<Employee>> DeleteEmployee(Employee employee)
         {
-            var dbEmployee = await _dataContext.employees.FindAsync(employee.EmployeeId);
+            var dbEmployee = await _dataContext.Employees.FindAsync(employee.EmployeeId);
             if (dbEmployee is null)
                 return NotFound("Employee not found.");
 
-            _dataContext.employees.Remove(dbEmployee);
+            _dataContext.Employees.Remove(dbEmployee);
             await _dataContext.SaveChangesAsync();
-            return Ok(await _dataContext.employees.ToListAsync());
+            return Ok(await _dataContext.Employees.ToListAsync());
         }
     }
 }

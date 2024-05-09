@@ -9,11 +9,18 @@ namespace APIProject.Data
 
         }
 
-        public DbSet<Employee> employees { get; set; }
+        public DbSet<Employee> Employees { get; set; }
 
-        public DbSet<State> states { get; set; }
+        public DbSet<Workflow> Workflows { get; set; }
 
-        public DbSet<WorkFlow> workflows { get; set; }
+        public DbSet<WorkflowState> WorkflowStates { get; set; }
+        public DbSet<WorkflowAction> WorkflowActions { get; set; }
+
+        public DbSet<EmployeeWorkflowState> EmployeeWorkflowStates { get; set; }
+
+        public DbSet<EmployeeWorkflowAction> EmployeeWorkflowActions { get; set; }
+        public DbSet<Audit> Audits { get; set; }
 
     }
+
 }
