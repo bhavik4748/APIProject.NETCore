@@ -91,12 +91,26 @@ namespace APIProject.Controllers
             var workflowActionId = employeeWorkflowAction.WorkflowActionId;
 
             var dbEmployee = await _context.Employees.FindAsync(employeeId);
-            var dbWorkflowAction = await _context.WorkflowStates.FindAsync(workflowActionId);
+            var dbWorkflowAction = await _context.WorkflowActions.FindAsync(workflowActionId);
 
-            if (dbEmployee == null || dbEmployee == null)
+            if (dbEmployee == null || dbWorkflowAction == null)
             {
                 return NotFound("Employee or Workflow Action does not exist");
             }
+
+
+            // var dbEmployeeWorkflowState = await _context.EmployeeWorkflowStates.Find FindAsync(employeeId);
+            var dbEmployeeWorkflowState = await _context.EmployeeWorkflowStates
+                .Include(a => a.Employee)
+                .Where(a => a.EmployeeId.Equals(employeeId))
+                .FirstOrDefaultAsync();
+
+            dbEmployeeWorkflowState.WorkflowStateId = dbWorkflowAction.StateToWorkflowStateId;
+            dbEmployeeWorkflowState.Updated = DateTime.UtcNow;
+            await _context.SaveChangesAsync();
+
+            //dbEmployeeWorkflowState.WorkflowStateId
+
 
             employeeWorkflowAction.WorkflowAction = null;
             employeeWorkflowAction.Employee = null;

@@ -67,30 +67,6 @@ namespace APIProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkflowActions",
-                columns: table => new
-                {
-                    WorkflowActionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    WorkflowId = table.Column<int>(type: "int", nullable: false),
-                    Action = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StateFrom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    StateTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkflowActions", x => x.WorkflowActionId);
-                    table.ForeignKey(
-                        name: "FK_WorkflowActions_Workflows_WorkflowId",
-                        column: x => x.WorkflowId,
-                        principalTable: "Workflows",
-                        principalColumn: "WorkflowId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "WorkflowStates",
                 columns: table => new
                 {
@@ -106,6 +82,70 @@ namespace APIProject.Migrations
                     table.PrimaryKey("PK_WorkflowStates", x => x.WorkflowStateId);
                     table.ForeignKey(
                         name: "FK_WorkflowStates_Workflows_WorkflowId",
+                        column: x => x.WorkflowId,
+                        principalTable: "Workflows",
+                        principalColumn: "WorkflowId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeWorkflowStates",
+                columns: table => new
+                {
+                    EmployeeWorkflowStateId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    WorkflowStateId = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeWorkflowStates", x => x.EmployeeWorkflowStateId);
+                    table.ForeignKey(
+                        name: "FK_EmployeeWorkflowStates_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EmployeeWorkflowStates_WorkflowStates_WorkflowStateId",
+                        column: x => x.WorkflowStateId,
+                        principalTable: "WorkflowStates",
+                        principalColumn: "WorkflowStateId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkflowActions",
+                columns: table => new
+                {
+                    WorkflowActionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WorkflowId = table.Column<int>(type: "int", nullable: false),
+                    Action = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StateFromWorkflowStateId = table.Column<int>(type: "int", nullable: false),
+                    StateToWorkflowStateId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkflowActions", x => x.WorkflowActionId);
+                    table.ForeignKey(
+                        name: "FK_WorkflowActions_WorkflowStates_StateFromWorkflowStateId",
+                        column: x => x.StateFromWorkflowStateId,
+                        principalTable: "WorkflowStates",
+                        principalColumn: "WorkflowStateId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_WorkflowActions_WorkflowStates_StateToWorkflowStateId",
+                        column: x => x.StateToWorkflowStateId,
+                        principalTable: "WorkflowStates",
+                        principalColumn: "WorkflowStateId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_WorkflowActions_Workflows_WorkflowId",
                         column: x => x.WorkflowId,
                         principalTable: "Workflows",
                         principalColumn: "WorkflowId",
@@ -140,34 +180,6 @@ namespace APIProject.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "EmployeeWorkflowStates",
-                columns: table => new
-                {
-                    EmployeeWorkflowStateId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    WorkflowStateId = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmployeeWorkflowStates", x => x.EmployeeWorkflowStateId);
-                    table.ForeignKey(
-                        name: "FK_EmployeeWorkflowStates_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EmployeeWorkflowStates_WorkflowStates_WorkflowStateId",
-                        column: x => x.WorkflowStateId,
-                        principalTable: "WorkflowStates",
-                        principalColumn: "WorkflowStateId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Audits_WorkFlowId",
                 table: "Audits",
@@ -192,6 +204,16 @@ namespace APIProject.Migrations
                 name: "IX_EmployeeWorkflowStates_WorkflowStateId",
                 table: "EmployeeWorkflowStates",
                 column: "WorkflowStateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkflowActions_StateFromWorkflowStateId",
+                table: "WorkflowActions",
+                column: "StateFromWorkflowStateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WorkflowActions_StateToWorkflowStateId",
+                table: "WorkflowActions",
+                column: "StateToWorkflowStateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkflowActions_WorkflowId",

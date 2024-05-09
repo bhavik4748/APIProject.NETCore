@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APIProject.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240508065032_Initial")]
+    [Migration("20240509071022_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -179,11 +179,11 @@ namespace APIProject.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StateFrom")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StateFromWorkflowStateId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("StateTo")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("StateToWorkflowStateId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -192,6 +192,10 @@ namespace APIProject.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("WorkflowActionId");
+
+                    b.HasIndex("StateFromWorkflowStateId");
+
+                    b.HasIndex("StateToWorkflowStateId");
 
                     b.HasIndex("WorkflowId");
 
@@ -276,11 +280,27 @@ namespace APIProject.Migrations
 
             modelBuilder.Entity("APIProject.Entities.WorkflowAction", b =>
                 {
+                    b.HasOne("APIProject.Entities.WorkflowState", "StateFromwWorkflowState")
+                        .WithMany()
+                        .HasForeignKey("StateFromWorkflowStateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("APIProject.Entities.WorkflowState", "StateToWorkflowState")
+                        .WithMany()
+                        .HasForeignKey("StateToWorkflowStateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("APIProject.Entities.Workflow", "Workflow")
                         .WithMany()
                         .HasForeignKey("WorkflowId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("StateFromwWorkflowState");
+
+                    b.Navigation("StateToWorkflowState");
 
                     b.Navigation("Workflow");
                 });

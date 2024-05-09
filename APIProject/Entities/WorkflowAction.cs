@@ -1,4 +1,6 @@
-﻿namespace APIProject.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace APIProject.Entities
 {
     public class WorkflowAction
     {
@@ -8,8 +10,16 @@
         public int WorkflowId { get; set; }
 
         public string? Action { get; set; }
-        public string? StateFrom { get; set; }
-        public string? StateTo { get; set; }
+
+        public int StateFromWorkflowStateId { get; set; }
+        [ForeignKey(nameof(StateFromWorkflowStateId))]
+        public WorkflowState StateFromwWorkflowState { get; set; }
+
+
+        public int StateToWorkflowStateId { get; set; }
+        [ForeignKey(nameof(StateToWorkflowStateId))]
+        public WorkflowState StateToWorkflowState { get; set; }
+
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
 

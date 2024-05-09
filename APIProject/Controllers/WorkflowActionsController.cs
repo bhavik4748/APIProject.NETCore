@@ -79,21 +79,40 @@ namespace APIProject.Controllers
         public async Task<ActionResult<WorkflowAction>> PostWorkflowAction(WorkflowAction workflowAction)
         {
             var workflowId = workflowAction.WorkflowId;
-            var workflow = await _context.Workflows.FindAsync(workflowId);
+            var stateFromWorkflowStateId = workflowAction.StateFromWorkflowStateId;
+            var stateToWorkflowstateId = workflowAction.StateToWorkflowStateId;
 
-            if (workflow == null)
+            if (stateFromWorkflowStateId == stateToWorkflowstateId)
             {
-                return NotFound("Workflow not exist");
+                return BadRequest("Statefrom and StateTo cannot be same");
             }
+
+            var dbWorkflow = await _context.Workflows.FindAsync(workflowId);
+            var dbStateFrom = await _context.WorkflowStates.FindAsync(stateFromWorkflowStateId);
+            var dbStateTo = await _context.WorkflowStates.FindAsync(stateToWorkflowstateId);
+
+
+            if (dbWorkflow == null || dbStateFrom == null || dbStateTo == null)
+            {
+                return NotFound("Workflow or States not exist");
+            }
+
             workflowAction.Workflow = null;
+            workflowAction.StateFromwWorkflowState = null;
+            workflowAction.StateToWorkflowState = null;
+
             _context.WorkflowActions.Add(workflowAction);
             await _context.SaveChangesAsync();
 
-            var result = await _context.WorkflowActions
-               .Include(w => w.Workflow)
-               .ToListAsync();
 
-            return Ok(result);           
+            var result = await _context.WorkflowActions
+              .Include(w => w.Workflow)
+              .Include(w => w.StateFromwWorkflowState)
+              .Include(w => w.StateToWorkflowState)
+              .ToListAsync();
+
+            return Ok(result);
+
         }
 
         // DELETE: api/WorkflowActions/5

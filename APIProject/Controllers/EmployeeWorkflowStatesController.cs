@@ -27,7 +27,7 @@ namespace APIProject.Controllers
         {
             return await _context.EmployeeWorkflowStates
                     .Include(w => w.Employee)
-                    .Include(w => w.WorkflowState)
+                    .Include(w => w.WorkflowState)                    
                     .ToListAsync();
         }
 
