@@ -11,9 +11,9 @@
 
         public DateTime? Updated { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        public virtual Employee? Employee { get; set; }
 
-        public virtual WorkflowAction WorkflowAction { get; set; }
+        public virtual WorkflowAction? WorkflowAction { get; set; }
 
     }
 }

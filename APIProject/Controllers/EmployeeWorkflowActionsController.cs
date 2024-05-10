@@ -114,6 +114,8 @@ namespace APIProject.Controllers
 
             employeeWorkflowAction.WorkflowAction = null;
             employeeWorkflowAction.Employee = null;
+            employeeWorkflowAction.Created = DateTime.UtcNow;
+            employeeWorkflowAction.Updated= DateTime.UtcNow;
 
             _context.EmployeeWorkflowActions.Add(employeeWorkflowAction);
             await _context.SaveChangesAsync();
